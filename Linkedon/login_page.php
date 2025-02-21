@@ -145,7 +145,7 @@ button{
                 <br>
                 <button type="submit" class="login_button">Login</button>
                 <br>
-                <p>Don't have an account yet? <a href="">Register here</a></p>
+                <p>Don't have an account yet? <a href="register_page.php">Register here</a></p>
             </form>
         </fieldset>
         

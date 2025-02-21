@@ -14,15 +14,16 @@ $curEmail = $curRow["_email"];
 
 $result = $conn->query("select * from company where _email = '$curEmail'");
 $row = $result->fetch_assoc();
+$curusertype = "current_".$row["_user_type"];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
     if (isset($_POST["form_type"])) {
         if ($_POST["form_type"] == "deleteAccount"){
-            DeleteAccount($conn,$curEmail);
+            DeleteAccount($conn,$curEmail,$curusertype);
             header("location: login_page.php");
         }
         if ($_POST["form_type"] == "logout"){
-            truncateCur($conn,"current_company");
+            truncateTable($conn,"current_company");
             header("location: login_page.php");
         }
     }
