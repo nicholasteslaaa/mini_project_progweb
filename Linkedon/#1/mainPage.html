@@ -27,7 +27,9 @@
         padding: 15px;
         text-align: center;
     }
-    
+    /*Logoutt button*/
+
+
     header a {
         color: white;
         text-decoration: none;
@@ -35,13 +37,28 @@
         float: right;
         margin-right: 20px;
     }
+
+    .logout-button{
+        position: absolute;
+        top: 33px;
+        right: 20px;
+        transform: translateY(-50%);
+        background: #B9B28A;
+        color: black;
+        padding: 10px;
+        border: black;
+        cursor: pointer;
+        border-radius: 5px;
+        text-decoration:none;
+    }
+    
     
     /*bawahnya*/
     .hero{
-        background: url('../../Linkedon/Images/1740032207.jpg') no-repeat center center/cover;
-        color: white;
+        background: url("../../Linkedon/Images/Brown\ Organic\ Abstract\ Zoom\ Virtual\ Background\ \(1\).png") no-repeat center center/cover;
+        color: black;
         text-align: center;
-        padding: 50px 20px;
+        padding: 50px 20px;;
     }
     
     .hero h2 {
@@ -127,62 +144,46 @@
 
 
 <body>
-    <!-- header -->
     <header>
+        <a href="loginPage.html" class="logout-button">Logout</a>
         <h1>Lowongan Pekerjaan</h1>
-        <a href="loginPage.html"></a>
     </header>
-
-    <!-- Section -->
-
     <div class="hero">
-        <h2>Temukan Pekerjaan impianmu !!</h2>
-        <p>ayo mulai karirmu sekarang</p>
+        <h2>Temukan Pekerjaan Impianmu!!</h2>
+        <h4>Mulai Karirmu Sekarang</h4>
     </div>
-    
-    <!-- Pencarian -->
-
     <div class="search-box">
         <input type="text" placeholder="Cari nama perusahaan...">
-        <button>cari</button>
+        <button>Cari</button>
     </div>
-
-    <!-- daftar lowongan -->
-    <div class = "job-container">
+    <div class="job-container">
         <div class="job-item">
-            <h3>software engineer</h3>
-            <p>Perusahaan : Pt.pencari cinta sejati</p>
-            <p>jenis: full time </p>
-            <p>Gaji = : 8.000.000</p>
-            <a href="detailPage.html" class ="btn">lihat detail</a>
+            <img src="../../Linkedon/Images/2842680.jpg" width="150px" alt="Software Engineer">
+            <h2><b>Software Engineer</b></h2>
+            <p>Perusahaan: PT.Pencari cinta sejati</p>
+            <p>Jenis: Full Time</p>
+            <p>Gaji: Rp 8.000.000</p>
+            <a href="detailPage.html" class="btn">Lihat Detail</a>
         </div>
-
         <div class="job-item">
-            <h3>software engineer</h3>
-            <p>Perusahaan : Pt.pencari cinta sejati</p>
-            <p>jenis: full time </p>
-            <p>Gaji = : 8.000.000</p>
-            <a href="detailPage.html" class ="btn">lihat detail</a>
+            <img src="../../Linkedon/Images/1480.jpg" width = "223px"alt="Network Engineer">
+            <h2><b>Network Engineer</b></h2>
+            <p>Perusahaan: PT. Jaringan Stabil</p>
+            <p>Jenis: Full Time</p>
+            <p>Gaji: Rp 7.500.000</p>
+            <a href="detailPage.html" class="btn">Lihat Detail</a>
         </div>
-
         <div class="job-item">
-            <h3>software engineer</h3>
-            <p>Perusahaan : Pt.pencari cinta sejati</p>
-            <p>jenis: full time </p>
-            <p>Gaji = : 8.000.000</p>
-            <a href="detailPage.html" class ="btn">lihat detail</a>
+            <img src="../../Linkedon/Images/web-design-concept-with-drawings.jpg" width="225px" alt="Web Developer">
+            <h2><b>Web Developer</b></h2>
+            <p>Perusahaan: PT. Kreatif Digital</p>
+            <p>Jenis: Full Time</p>
+            <p>Gaji: Rp 7.800.000</p>
+            <a href="detailPage.html" class="btn">Lihat Detail</a>
         </div>
     </div>
-
-<!-- footer -->
- <!-- <br>
- <br>
- <br>
- <br> -->
     <footer>
-        <p>&copy; 2025 Portal lowongan kerja | Dibuat dengan sepenuh hati😍</p>
+        <p>&copy; 2025 Portal Lowongan Kerja | Dibuat dengan sepenuh hati😍</p>
     </footer>
-
-
 </body>
 </html>
