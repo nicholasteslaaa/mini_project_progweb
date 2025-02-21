@@ -42,52 +42,119 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
+<style>
+body {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh; /* Full height of the viewport */
+    margin: 0;
+    background-color: #f9f3d9; /* Optional: Background color */
+}
+
+header {
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+    padding: 20px;
+    position: absolute; /* Keep header at the top */
+    top: 0;
+
+    background-color: #504b38;
+    color: #fffdfd;
+}
+
+footer {
+    width: 100%;
+    text-align: center;
+    font-size:larger;
+    padding: 5px;
+    position: absolute; /* Keep header at the top */
+    bottom: 0;
+
+    background-color: #504b38;
+    color: #fffdfd;
+}
+
+fieldset{
+    width: fit-content;
+    color: black;
+    height: fit-content;
+    border-radius: 10%;
+    padding: 5%;
+    background-color: #ebe5c1;
+
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.815);
+    
+}
+h1{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 300%;
+    margin-top: -10%;
+}
+div input{
+    font-family: Arial, Helvetica, sans-serif;
+    width:300px;
+    height:40px;
+    background-color: #bab18d60;
+    border-radius: 10%;
+}
+div{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+div label{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:x-large;
+}
+button{
+    font-family: Arial, Helvetica, sans-serif;
+    width: 150px;
+    height: 40px;
+    border-radius: 15%;
+    background-color: #bab18d ;
+    font-size: x-large;
+}
+</style>
+
 <body>
     <header>
-        <img src="decoration/Linkedon logo.png" alt="Logo" width="150px">
+        <b>
+            LinkedOn
+        </b>
     </header>
-    <hr>
 
-    <table align="center">
-        <tr>
-            <td>
-                
-                <form action="" method="post">
-                <fieldset>
-                    <legend align="center"><b>Login Page</b></legend>
-                    
-                        <table align="center">
-                            <tr>
-                                <td><label for="email"></label>Email:</td>
-                                <td><input type="email" name="email" id="email"></td>
-                            </tr>
-                            
-                            <tr>
-                                <td><label for="pw"></label>Password:</td>
-                                <td><input type="password" name="password" id="pw"></td>
-                            </tr>
-                            
-                            <tr>
-                                <td>
-                                <button type="submit">Login</button>
-                            </td>
-                        </tr>
-                        
-                        <tr>
-                            <td colspan="2">
-                                <p>Don't have an account yet? <a href="register_page.php">Register here</a></p>
-                            </td>
-                            <td>
-                                
-                                </td>
-                            </tr>
-                            
-                        </table>
-                    </fieldset>
-                </form>
-                </td>    
-            </tr>    
-        </table>    
+    <fieldset>
+        <h1>Login Page</h1>    
+        <form action="" method="post">
+            
+            <div>
+                <label for="Email" class="label" style="text-align: left;"> Email:</label>
+                <br>
+                <input type="email" name="email" id="Email" class="input_box" placeholder="Masukan email anda disini" required>
+                <label for="Password" class="label">Password:</label>
+                <br>
+                <input type="password" name="password" id="Password" class="input_box" placeholder="Masukan password anda disini" required>
+            </div>
+                <br>
+                <button type="submit" class="login_button">Login</button>
+                <br>
+                <p>Don't have an account yet? <a href="">Register here</a></p>
+            </form>
+        </fieldset>
         
+        <aside >
+            <img src="decoration/ChillGuy.png" width="300px" alt="">
+        </aside>
+    
+        <footer>
+            Hello World
+        </footer>
 </body>
 </html>
