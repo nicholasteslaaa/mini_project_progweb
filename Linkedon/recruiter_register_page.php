@@ -1,11 +1,6 @@
 <?php
 include "method.php";
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "linkedon";
-
-$conn = new mysqli($servername,$username,$password,$dbname);
+$conn = openDB("localhost","root","","linkedon");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["image"])) {
     $email = $_POST["Email"];
@@ -22,10 +17,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["image"])) {
     }
     else{
         $filename = getFile("images/");
-        registerCompany($conn,$email,$password,$namaperusahaan,$tanggalberdiri,$alamat,$filename,$tipe_user);
-
-        if (checkUser($conn,$email,$tipe_user)){
+        if (registerCompany($conn,$email,$password,$namaperusahaan,$tanggalberdiri,$alamat,$filename,$tipe_user)){
             echo "Register Successful!";
+        }
+        else{
+            echo "Register Failed!";
         }
     }
 }

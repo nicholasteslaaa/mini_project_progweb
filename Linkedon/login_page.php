@@ -1,10 +1,7 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "linkedon";
+include "method.php";
+$conn = openDB("localhost","root","","linkedon");
 
-$conn = new mysqli($servername,$username,$password,$dbname);
 $conn->query("truncate table current_client");
 $conn->query("truncate table current_company");
 

@@ -1,3 +1,33 @@
+<?php
+include "method.php";
+$conn = openDB("localhost","root","","linkedon");
+
+$detail = $conn->query("select * from detaillowongan");
+$namaperusahaan = $detail->fetch_assoc()["_namaPerusahaan"];
+$getInfo = $conn->query("select *,FORMAT(_gaji, 0, 'de_DE') AS gaji from loker where _namaPerusahaan = '$namaperusahaan'");
+$row = $getInfo->fetch_assoc();
+$job = $row["_job"];
+$deskripsi = $row["_deskripsi"];
+$kualifikasi = $row["_kualifikasi"];
+$gaji= $row["gaji"];
+$gajiPer = $row["_gajiPer"];
+$picture = $row["_pictpath"];
+$deadline = $row["_deadline"];
+$alamat = $row["_alamat"];
+$tipe = $row["_tipe"];
+$remote = $row["_remote"];
+$keuntungan = $row["_keuntungan"];
+
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
+    if (isset($_POST["form_type"])) {
+        if ($_POST["form_type"] == "main_menu"){
+            truncateTable($conn,"detaillowongan");
+            header("location: main_page.php");
+        }
+    }
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,14 +72,27 @@ img {
     object-fit: cover;
   }
 
-.back-link {
+  .back-link {
     position: absolute;
     left: 20px;
     top: 50%;
     transform: translateY(-50%);
     color: white;
+    background-color: transparent;
+    border: none;
     text-decoration: none;
     font-size: 18px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    display: inline-block; /* Ensures the button behaves like a button */
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.back-link:hover {
+    background-color: white;
+    color: black; /* Fix: Make text visible */
+    
 }
 
 .container {
@@ -146,7 +189,11 @@ img {
 <body>
     <header>
         <h1>Detail Pekerjaan</h1>
-        <a href="mainPage.html" class="back-link">&#8592; Kembali ke Halaman Utama</a>
+        <form action="" method="post"> 
+            <input type="hidden" name="form_type" value="main_menu">
+            <button type="submit" class="back-link">  	&lt; Kembali ke Halaman Utama </button>
+        </form>
+
     </header>
     
     <div class="container">
@@ -158,7 +205,7 @@ img {
                         <strong>Perusahaan </strong>
                     </td>
                     <td class="kolomtable">
-                        <p> PT. Pencari Cinta Sejati</p>
+                        <p><?php echo $namaperusahaan; ?></p>
                     </td>
                 </tr>
                 <tr>
@@ -166,7 +213,7 @@ img {
                         <strong>Jenis</strong>
                     </td>
                     <td class="kolomtable">
-                        <p> Full Time</p>
+                        <p><?php echo $tipe; ?></php></p>
                     </td>
                 </tr>
                 <tr>
@@ -174,7 +221,7 @@ img {
                         <strong>Gaji</strong>
                     </td>
                     <td class="kolomtable">
-                        <p>Rp 8.000.000/bulan</p>
+                        <p><?php echo "Rp.".$gaji."/".$gajiPer;?></p>
                     </td>
                 </tr>
                 <tr class="kelompokTable1">
@@ -183,9 +230,7 @@ img {
                     </td>
                     <td class="panjanginSyarat">
                         <ul class="unorderedlist">
-                            <li>Mengembangkan dan memelihara aplikasi web.</li>
-                            <li>Bekerja sama dengan tim untuk merancang solusi teknologi.</li>
-                            <li>Menganalisis dan memperbaiki bug dalam sistem.</li>
+                        <?php echo $deskripsi;?>
                         </ul>
                     </td>
                 </tr>
@@ -195,9 +240,7 @@ img {
                     </td>
                     <td class="panjanginSyarat">
                         <ul class="unorderedlist">
-                            <li>Pendidikan minimal S1 Teknik Informatika atau setara.</li>
-                            <li>Pengalaman minimal 2 tahun dalam pengembangan perangkat lunak.</li>
-                            <li>Menguasai HTML, CSS, JavaScript, dan framework terkait.</li>
+                        <?php echo $kualifikasi;?>
                         </ul>
                     </td>
                 </tr>
@@ -210,7 +253,7 @@ img {
             <table>
                 <tr>
                     <td>
-                        <img src="../Images/1739897138.jpg">
+                        <img src="<?php echo $picture ; ?>">
                     </td>
                 </tr>
                 <tr>
@@ -221,7 +264,7 @@ img {
                                     <strong>Lokasi</strong>
                                 </td>
                                 <td class="kolomtablekecil">
-                                    <p> Jakarta, Indonesia</p>
+                                    <p><?php echo $alamat ; ?></p>
                                 </td>
                             </tr>
                             <tr>
@@ -229,7 +272,7 @@ img {
                                     <strong>Deadline</strong>
                                 </td>
                                 <td class="kolomtablekecil">
-                                    <p>28 Februari 2025</p>
+                                    <p><?php echo $deadline; ?></p>
                                 </td>
                             </tr>
                             <tr>
@@ -237,7 +280,7 @@ img {
                                     <strong>Keuntungan</strong>
                                 </td>
                                 <td class="kolomtablekecil">
-                                    <p>Asuransi kesehatan, tunjangan makan, dan bonus tahunan.</p>
+                                    <p><?php echo $keuntungan; ?></p>
                                 </td>
                             </tr>
                         </table>

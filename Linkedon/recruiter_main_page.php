@@ -1,12 +1,6 @@
 <?php
 include "method.php";
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "linkedon";
-
-$conn = new mysqli($servername,$username,$password,$dbname);
+$conn = openDB("localhost","root","","linkedon");
 
 $current = $conn->query("select * from current_company");
 $curRow = $current->fetch_assoc();

@@ -1,11 +1,7 @@
 
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "linkedon";
-
-$conn = new mysqli($servername,$username,$password,$dbname);
+include "method.php";
+$conn = openDB("localhost","root","","linkedon");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["image"])) {
     $email = $_POST["Email"];
@@ -14,28 +10,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["image"])) {
     $nambel = $_POST["namaBelakang"];
     $tanggalLahir = $_POST["tanggalLahir"];
     $alamat = $_POST["alamat"];
-    $tipe_user = "Employee";
+    $tipe_user = "client";
     
     
-    $target_dir = "images/";
-    // Get file extension
-    $file_extension = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
-    // Generate a unique filename using timestamp
-    $new_filename = time() . "." . $file_extension;
-    $target_file = $target_dir . $new_filename; // pict path
     
-    $check = $conn->query("SELECT * FROM client WHERE _email = '$email'");
-    if ($check->num_rows > 0){
+    if (checkUser($conn,$email,$tipe_user)){
         echo "email already registered in database";
     }
     else{
-        if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-            echo "File uploaded successfully";
-        } else {
-            echo "Error uploading file.";
+        $target_file = getFile("images/");
+        if (registerClient($conn,$email,$password,$namdep,$nambel,$tanggalLahir,$alamat,$target_file,$tipe_user)){
+            echo "Register successful!";
         }
-        $conn->query("INSERT INTO client VALUES('$email','$password','$namdep','$nambel','$tanggalLahir','$alamat','$target_file','$tipe_user')");
-        
+        else{
+            echo "Register faileds!";
+        }
     }
 
     
