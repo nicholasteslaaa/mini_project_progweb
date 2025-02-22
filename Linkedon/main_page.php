@@ -60,7 +60,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         padding: 15px;
         text-align: center;
     }
-    /*Logoutt button*/
+
+    footer {
+    width: 100%;
+    text-align: center;
+    font-size:larger;
+    padding: 5px;
+    position: absolute; /* Keep header at the top */
+    bottom: auto;
+
+    background-color: #504b38;
+    color: #fffdfd;
+    }
 
 
     header a {
@@ -300,8 +311,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         } else {
             echo "No records found";
         }
-        // $conn->close();
+        $conn->close();
         ?>
-
+    <footer>
+    2025 Portal Lowongan Kerja | Dibuat dengan sepenuh hati😍
+    </footer>
 </body>
 </html>

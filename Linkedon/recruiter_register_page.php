@@ -228,7 +228,7 @@ p{
             <img src="decoration/pepe.png" width="450px" alt="">
 
     <footer>
-        Hello world
+    2025 Portal Lowongan Kerja | Dibuat dengan sepenuh hati😍
     </footer>
 </body>
 </html>

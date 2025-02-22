@@ -54,7 +54,7 @@ header {
     width: 100%;
     text-align: center;
     font-size: 2rem;
-    padding: 10px;
+    padding: 20px;
     position: absolute; /* Keep header at the top */
     top: 0;
 
@@ -220,7 +220,7 @@ label{
     <img src="decoration/SHREK.png" width=350px alt="">
 
     <footer>
-        Hello world
+    2025 Portal Lowongan Kerja | Dibuat dengan sepenuh hati😍
     </footer>
 </body>
 </html>

@@ -151,7 +151,7 @@ button{
         </aside>
     
         <footer>
-            Hello World
+        2025 Portal Lowongan Kerja | Dibuat dengan sepenuh hati😍
         </footer>
 </body>
 </html>
