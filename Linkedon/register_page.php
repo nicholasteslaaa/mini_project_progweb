@@ -228,7 +228,7 @@ label{
         </fieldset>
     </form>
     
-    <img src="decoration/business_man.png" width=350px alt="">
+    <img src="decoration/SHREK.png" width=350px alt="">
 
     <footer>
         Hello world
