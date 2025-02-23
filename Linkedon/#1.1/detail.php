@@ -326,6 +326,7 @@ img {
     </div>
 
     <?php
+        if (companyOrClient($conn)=="company"){
         $curEmail = $conn->query("SELECT * FROM current_company")->fetch_assoc()["_email"];
         $currentnama = $conn->query("SELECT * FROM company where _email = '$curEmail'")->fetch_assoc()["_namaPerusahaan"];
 
@@ -363,6 +364,7 @@ img {
             echo "No records found";
         }
         $conn->close();
+            }
         }
     ?>
 
