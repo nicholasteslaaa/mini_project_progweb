@@ -25,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     if (isset($_POST["detailLowongan"])) {
         truncateTable($conn,"detaillowongan");
         list($namaPerusahaan, $job) = explode("|", $_POST["detailLowongan"]);
+        $conn->query("INSERT INTO detaillowongan values('$namaPerusahaan','$job')");
         header("location: detail.php");
     }
     if (isset($_POST["buatLowongan"])) {        
@@ -211,14 +212,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 /* The container <div> - needed to position the dropdown content */
 .dropdown {
     position: absolute;
-    top: 33px;
+    /* top: 1px; */
     right: 10px;
-    transform: translateY(-50%);
+    /* transform: translateY(-50%); */
     color: black;
     border: black;
     cursor: pointer;
     border-radius: 5px;
-    text-decoration:none;
+    /* text-decoration:none; */
 }
 
 /* Dropdown Content (Hidden by Default) */
@@ -317,7 +318,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                             <p>Jenis: {$row['_tipe']}</p>
                             <p>Gaji: Rp {$row['gaji']}/{$row['_gajiPer']}</p>
                             <form action='' method='post'> 
-                                <input type='hidden' name='detailLowongan' value='{$row['_namaPerusahaan']}'>
+                                <input type='hidden' name='detailLowongan' value='" . htmlspecialchars($row["_namaPerusahaan"] . "|" . $row["_job"], ENT_QUOTES, 'UTF-8') . "'>
                                 <button type='submit' class='btn'>Lihat Detail</button>
                             </form>
                         </div>
@@ -333,4 +334,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     2025 Portal Lowongan Kerja | Dibuat dengan sepenuh hati😍
     </footer>
 </body>
-</html>
+    </html>
