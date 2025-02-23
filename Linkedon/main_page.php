@@ -111,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     
     /*bawahnya*/
     .hero{
-        background: url("../../Linkedon/Images/Brown\ Organic\ Abstract\ Zoom\ Virtual\ Background\ \(1\).png") no-repeat center center/cover;
+        background: url("Images/Brown Organic Abstract Zoom Virtual Background (1).png") no-repeat center center/cover;
         color: black;
         text-align: center;
         padding: 50px 20px;;
@@ -249,7 +249,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 <body>
     <header>
         <div class="dropdown">
-            <button class="dropbtn"><img src="decoration/hamburger-menu-4.png" width="60px" alt=""></button>
+            <button class="dropbtn"><img src="decoration/menuHamburger.png" width="50px" alt=""></button>
             <div class="dropdown-content">
                 <form action="" method="post"> 
                     <input type="hidden" name="form_type" value="Account">
