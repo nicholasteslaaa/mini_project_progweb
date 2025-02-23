@@ -194,7 +194,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     font-size:larger;
     padding: 5px;
     position: absolute; /* Keep header at the top */
-    bottom: 1;
+    bottom: 0;
 
     background-color: #504b38;
     color: #fffdfd;
@@ -212,7 +212,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 /* The container <div> - needed to position the dropdown content */
 .dropdown {
     position: absolute;
-    /* top: 1px; */
+    top: 1px;
     right: 10px;
     /* transform: translateY(-50%); */
     color: black;

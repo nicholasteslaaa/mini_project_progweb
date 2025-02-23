@@ -5,6 +5,7 @@ $conn = openDB("localhost","root","","linkedon");
 $detail = $conn->query("select * from detaillowongan");
 $rowdetail = $detail->fetch_assoc();
 $namaperusahaan = $rowdetail["_namaPerusahaan"];
+$jobdesk = $rowdetail["_job"];
 
 
 $getInfo = $conn->query("select *,FORMAT(_gaji, 0, 'de_DE') AS gaji from loker where _namaPerusahaan = '$namaperusahaan'");
@@ -41,14 +42,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 </head>
 
 <style>
-    * {
+
+body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Arial', sans-serif;
-}
-
-body {
     background-color: #F8F3D9;
     color: #333;
 }
@@ -61,11 +60,11 @@ header {
     position: relative;
 }
 
-table{
+.main_table{
     border-collapse: collapse;
 }
 
-table td:nth-child(2) {
+.main_table td:nth-child(2) {
     width: 70%;
 }
 
@@ -148,7 +147,7 @@ img {
     font-size:larger;
     padding: 5px;
     position: absolute; /* Keep header at the top */
-    bottom: 0;
+    bottom: auto;
 
     background-color: #504b38;
     color: #fffdfd;
@@ -187,6 +186,39 @@ img {
 .kolomtablekecil{
     width: 16vh;
 }
+
+.CV {
+    border: 2px solid black; /* Outer border for the table */
+    border-collapse: collapse; /* Merge cell borders */
+    width: 80%; /* Adjust width if needed */
+    margin-top: 20px;
+}
+
+.CV th, .CV td {
+    border: 1px solid black; /* Borders for each cell */
+    padding: 10px; /* Add spacing inside cells */
+    text-align: left; /* Align text */
+}
+
+.CV thead {
+    background-color: #504B38; /* Header background */
+    color: white; /* Header text color */
+}
+
+.download-btn {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.download-btn:hover {
+    background-color: #218838;
+}
+
 </style>
 
 <body>
@@ -202,7 +234,7 @@ img {
     <div class="container">
         <div class="job-details">
             <h2>Software Engineer</h2>
-            <table>
+            <table class = "main_table"> 
                 <tr>
                     <td class="kolomtable">
                         <strong>Perusahaan </strong>
@@ -292,7 +324,52 @@ img {
             </table>
         </div>
     </div>
-    
+
+    <?php
+        $curEmail = $conn->query("SELECT * FROM current_company")->fetch_assoc()["_email"];
+        $currentnama = $conn->query("SELECT * FROM company where _email = '$curEmail'")->fetch_assoc()["_namaPerusahaan"];
+
+        if ($namaperusahaan == $currentnama){
+
+            $result = $conn->query("SELECT * FROM cv WHERE _namaPerusahaan = '$namaperusahaan' AND _job = '$jobdesk'");
+            if ($result->num_rows > 0) {
+                echo "<div class='job-container'>";
+            echo "<table class='CV' align='center'>";
+            echo "
+                <thead>
+                    <th>nama</th>
+                    <th>alamat</th>
+                    <th>nomor HP</th>
+                    <th>email</th>
+                    <th>gender</th>
+                    <th>cv</th>
+                    <th>JobDesk</th>  
+                </thead>
+            ";
+            while ($row = $result->fetch_assoc()) {
+                echo"<tr>
+                        <td>{$row['_nama']}</td>
+                        <td>{$row['_alamat']} </td>
+                        <td>{$row['_noTelp']} </td>
+                        <td>{$row['_email']} </td>
+                        <td>{$row['_gender']} </td>
+                        <td><a href=\"" . $row['_cv'] . "\" download class='download-btn'>Download pdf</a></td>
+                        <td>{$row['_job']} </td>
+                    </tr>";
+                }
+            echo "</table>";
+            echo "</div>";
+        } else {
+            echo "No records found";
+        }
+        $conn->close();
+        }
+    ?>
+
+
+
+
+
     <footer class="footer">
         <p>&copy; 2025 Portal Lowongan Kerja | Dibuat dengan sepenuh hati😍</p>
     </footer>

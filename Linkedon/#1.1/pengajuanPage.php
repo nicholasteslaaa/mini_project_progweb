@@ -210,8 +210,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
                     <label for='gender'>Jenis Kelamin :</label>
                     <select name='gender' id='gender' required>
-                        <option value='male'>Laki-laki</option>
-                        <option value='female'>Perempuan</option>
+                        <option value='Laki-laki'>Laki-laki</option>
+                        <option value='Perempuan'>Perempuan</option>
                     </select>
 
                     <label for='cv'>Unggah CV (PDF):</label>
