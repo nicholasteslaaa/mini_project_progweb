@@ -3,7 +3,10 @@ include "method.php";
 $conn = openDB("localhost","root","","linkedon");
 
 $detail = $conn->query("select * from detaillowongan");
-$namaperusahaan = $detail->fetch_assoc()["_namaPerusahaan"];
+$rowdetail = $detail->fetch_assoc();
+$namaperusahaan = $rowdetail["_namaPerusahaan"];
+
+
 $getInfo = $conn->query("select *,FORMAT(_gaji, 0, 'de_DE') AS gaji from loker where _namaPerusahaan = '$namaperusahaan'");
 $row = $getInfo->fetch_assoc();
 $job = $row["_job"];

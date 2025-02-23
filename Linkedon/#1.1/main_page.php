@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     if (isset($_POST["detailLowongan"])) {
         truncateTable($conn,"detaillowongan");
-        $conn->query("INSERT INTO detaillowongan values('{$_POST['detailLowongan']}')");
+        list($namaPerusahaan, $job) = explode("|", $_POST["detailLowongan"]);
         header("location: detail.php");
     }
     if (isset($_POST["buatLowongan"])) {        

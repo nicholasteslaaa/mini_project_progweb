@@ -83,6 +83,11 @@ function checkUser($conn,$email,$tipe_user){
     return $check->num_rows > 0;
 }
 
+function checkCV($conn,$name,$namaPerusahaan,$job){
+    $result = $conn->query("select * from cv where _nama = '$name' and _namaPerusahaan = '$namaPerusahaan' and _job = '$job'");
+    return $result->num_rows > 0;
+}
+
 function getFile($folder){
     $target_dir = $folder."/";
     // Get file extension
@@ -92,6 +97,22 @@ function getFile($folder){
     $target_file = $target_dir . $new_filename; // pict path
     move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
     return $target_file;
+}
+
+function getPDF($folder) {
+    if (!isset($_FILES["pdf"]) || $_FILES["pdf"]["error"] !== UPLOAD_ERR_OK) {
+        return false;
+    }
+
+    $file_extension = strtolower(pathinfo($_FILES["pdf"]["name"], PATHINFO_EXTENSION));
+    if ($file_extension !== "pdf") {
+        return false;
+    }
+
+    $new_filename = time() . ".pdf";
+    $target_file = rtrim($folder, "/") . "/" . $new_filename;
+
+    return move_uploaded_file($_FILES["pdf"]["tmp_name"], $target_file) ? $target_file : false;
 }
 
 function openDB($servername,$username,$password,$dbname){

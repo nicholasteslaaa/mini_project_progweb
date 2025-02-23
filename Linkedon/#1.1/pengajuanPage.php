@@ -6,6 +6,9 @@ $tipe = companyOrClient($conn);
 $email = getEmail($conn);
 $row = $conn->query("SELECT * FROM $tipe WHERE _email = '$email'");
 $nama = getName($conn,$email);
+$name = "";
+$namaPerusahaan = "";
+$job = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
     if (isset($_POST["form_type"])) {
         if ($_POST["form_type"] == "main_menu"){
@@ -18,14 +21,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         }
 
         
-        if ($_POST["form_type"] == "UnggahLamaran"){
+        
+    }
+    if (isset($_POST["Lamaran"])) {
+        if ($_POST["Lamaran"] == "UnggahLamaran"){
+            $detailrow = $conn->query("select * from detaillowongan")->fetch_assoc();
+            $namaPerusahaan = $detailrow["_namaPerusahaan"];
+            $job = $detailrow["_job"];
+            $name = $_POST['name'];
+            $alamat = $_POST['alamat'];
+            $phone = $_POST['phone'];
+            $dob = $_POST['dob'];
+            $email = $_POST['email'];
+            $gender = $_POST['gender'];
+            $cv = getPDF("pdf");
+
+            if (checkCV($conn,$name,$namaPerusahaan,$job)){
+                echo $nama." sudah pernah mendaftar sebagai ".$job." di ".$namaPerusahaan;
+            }
+            else {
+                $conn->query("INSERT INTO cv VALUES('$name','$alamat','$phone','$dob','$email','$gender','$cv','$namaPerusahaan','$job')");
+            }
             
         }
-        
     }
     if (isset($_POST["Lowongan"])) {
         if ($_POST["Lowongan"] == "UnggahLowongan"){
-            echo "behasil";
+            echo "berhasil";
             $nama = $_POST["namaPerusahaan"];
             $jobdesk = $_POST["jobdesk"];
             $deskripsi = $_POST["deskripsi"];
@@ -38,7 +60,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             $gaji = $_POST["gaji"];
             $gajiPer = $_POST["terimagaji"];
             $foto = getFile("../Images");
-            
 
             $conn->query("INSERT INTO loker VALUES('$deskripsi','$kualifikasi','$nama','$gaji','$gajiPer','$foto','$deadline','$lokasi','$jenis','$remote','$jobdesk','$keuntungan')");
         }
@@ -169,38 +190,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         echo "
             <div class='container'>
                 <h1>Pengajuan Lamaran</h1>
-                <form method='post'>
-                    <input type='hidden' name='form_type' value='UnggahLamaran'>
-                    <label for='name'>Nama : </label>
-                    <input type='text' id='name' name='name' placeholder='Masukkan Nama Anda' required>
-                    
-                    <label for='alamat'>Alamat : </label>
-                    <input type='text' id='alamat' name='alamat' placeholder='Masukan alamat Anda' required>
-                    
-                    <label for='phone'>Nomor Telepon : </label>
-                    <input type='tel' id='phone' name='phone' placeholder='Masukan nomor telepon anda' required>
-    
+                <form method='post' enctype='multipart/form-data'>
+                    <input type='hidden' name='Lamaran' value='UnggahLamaran'>
+
+                    <label for='name'>Nama :</label>
+                    <input type='text' id='name' name='name' value='$nama' required>
+
+                    <label for='alamat'>Alamat :</label>
+                    <input type='text' id='alamat' name='alamat' required>
+
+                    <label for='phone'>Nomor Telepon :</label>
+                    <input type='tel' id='phone' name='phone' required>
+
                     <label for='dob'>Tanggal Lahir :</label>
                     <input type='date' id='dob' name='dob' required>
-    
-                    <label for='email'>Email : </label>
-                    <input type='email' id='email' name='email ' placeholder='Masukan email anda' required>
-                    
-                    <label for='gender'>Jenis Kelamin</label>
+
+                    <label for='email'>Email :</label>
+                    <input type='email' id='email' name='email' value='$email' required>
+
+                    <label for='gender'>Jenis Kelamin :</label>
                     <select name='gender' id='gender' required>
-                        <option value=''>Pilih Jenis Kelamin</option>
                         <option value='male'>Laki-laki</option>
                         <option value='female'>Perempuan</option>
                     </select>
-                    
-                    <label for='cv'>Unggah cv anda :</label>
-                    <input type='file' id='cv' name='cv' accept='.pdf' placeholder='File dalam bentuk pdf' required>
-                    
-                    <button type='submit' class='submit-btn' onclick='document.querySelector('.Terimakasih').style.display = 'block''>Kirim Lamaran</button>
+
+                    <label for='cv'>Unggah CV (PDF):</label>
+                    <input id='cv' type='file' name='pdf' accept='.pdf' required>
+
+                    <button type='submit' class='submit-btn'>Kirim Lamaran</button>
                 </form>
-                <p class='Terimakasih'> Terimakasih sudah memasukan lamaran🙏</p>
-            </div>
-            ";
+                ";
+            if (checkCV($conn,$name,$namaPerusahaan,$job)){
+                echo "<p class='Terimakasih'> Terimakasih sudah memasukan lamaran🙏</p>";
+            }
+            echo "</div>";
         }
         
         if ($tipe == "company"){
