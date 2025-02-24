@@ -275,15 +275,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         }
         
         if ($tipe == "company"){
-            $checkEditRow = $conn->query("SELECT * FROM detaillowongan")->fetch_assoc();
-            $checkEdit = $checkEditRow["_edit"];
-            $namaPerusahaan = $checkEditRow["_namaPerusahaan"];
-            $jobdesk = $checkEditRow["_job"];
+            $checkDetail = $conn->query("SELECT * FROM detaillowongan");
+            if($checkDetail->num_rows>0){
 
-            $checkLoker = $conn->query("SELECT * FROM loker where _namaPerusahaan = '$namaPerusahaan' AND _job = '$jobdesk'");
-            $lokerRow = $checkLoker->fetch_assoc();
-            if ($checkLoker->num_rows>0 && $checkEdit){
-                echo "
+                $checkDetailRow = $checkDetail->fetch_assoc();
+                $namaPerusahaan = $checkDetailRow["_namaPerusahaan"];
+                $jobdesk = $checkDetailRow["_job"];
+                $checkEdit = $checkDetailRow["_edit"];
+                
+                $checkLoker = $conn->query("SELECT * FROM loker where _namaPerusahaan = '$namaPerusahaan' AND _job = '$jobdesk'");
+                $lokerRow = $checkLoker->fetch_assoc();
+                if ($checkLoker->num_rows>0 && $checkEdit){
+                    echo "
                 <div class='container'>
                 <h1>Edit Lowongan Kerja</h1>
                 <form method='post' enctype='multipart/form-data'>
@@ -315,32 +318,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                 
                 <label for='terimaGaji'>Terima gaji : </label>
                 <select name='terimagaji' id='terimaGaji' required>
-                    <option value='Hari'>Per Hari</option>
+                <option value='Hari'>Per Hari</option>
                     <option value='Minggu'>Per Minggu</option>
                     <option value='Bulan'>Per Bulan</option>
                     <option value='Tahun'>Per Tahun</option>
-                </select>
-                
-                
-                
-                <label for='lokasi'>lokasi : </label>
-                <input type='text' id='lokasi' name='lokasi' placeholder='Masukan alamat' value='{$lokerRow['_alamat']}' required>
-                
-                <label for='deadline'>Deadline :</label>
-                <input type='date' id='deadline' name='deadline' value='{$lokerRow['_deadline']}' required>
-                
-                <label for='remote'>Remote : </label>
-                <select name='remote' id='remote' required>
-                        <option value='false'>tidak</option>
-                        <option value='true'>ya</option>
-                </select>
-                
-                <label for='foto'>Unggah foto :</label>
-                <input type='file' name='image' id='foto' required>
-                <button type='submit' class='submit-btn'>Edit Lowongan</button>
-                </form>
-                </div>
-                ";
+                    </select>
+                    
+                    
+                    
+                    <label for='lokasi'>lokasi : </label>
+                    <input type='text' id='lokasi' name='lokasi' placeholder='Masukan alamat' value='{$lokerRow['_alamat']}' required>
+                    
+                    <label for='deadline'>Deadline :</label>
+                    <input type='date' id='deadline' name='deadline' value='{$lokerRow['_deadline']}' required>
+                    
+                    <label for='remote'>Remote : </label>
+                    <select name='remote' id='remote' required>
+                    <option value='false'>tidak</option>
+                    <option value='true'>ya</option>
+                    </select>
+                    
+                    <label for='foto'>Unggah foto :</label>
+                    <input type='file' name='image' id='foto' required>
+                    <button type='submit' class='submit-btn'>Edit Lowongan</button>
+                    </form>
+                    </div>
+                    ";
+                }
             }
             else{
                 echo "

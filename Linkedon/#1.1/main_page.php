@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         $conn->query("INSERT INTO detaillowongan values('$namaPerusahaan','$job',false)");
         header("location: detail.php");
     }
-    if (isset($_POST["buatLowongan"])) {        
+    if (isset($_POST["buatLowongan"])) {
         header("location: pengajuanPage.php");
     }
 }
