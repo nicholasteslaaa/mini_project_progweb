@@ -1,14 +1,27 @@
 <?php
+//function
+function permission($conn,$namaPerusahaan){
+    if (companyOrClient($conn)=="company"){
+        $curEmail = $conn->query("SELECT * FROM current_company")->fetch_assoc()["_email"];
+        $currentnama = $conn->query("SELECT * FROM company where _email = '$curEmail'")->fetch_assoc()["_namaPerusahaan"];
+        
+        if ($namaPerusahaan == $currentnama){
+            return true;   
+        }
+    }
+    return false;
+}
+?>
+<?php
 include "method.php";
 $conn = openDB("localhost","root","","linkedon");
 
-$detail = $conn->query("select * from detaillowongan");
+$detail = $conn->query("select _namaPerusahaan,_job from detaillowongan");
 $rowdetail = $detail->fetch_assoc();
 $namaperusahaan = $rowdetail["_namaPerusahaan"];
 $jobdesk = $rowdetail["_job"];
 
-
-$getInfo = $conn->query("select *,FORMAT(_gaji, 0, 'de_DE') AS gaji from loker where _namaPerusahaan = '$namaperusahaan'");
+$getInfo = $conn->query("select *,FORMAT(_gaji, 0, 'de_DE') AS gaji from loker where _namaPerusahaan = '$namaperusahaan' AND _job = '$jobdesk'");
 $row = $getInfo->fetch_assoc();
 $job = $row["_job"];
 $deskripsi = $row["_deskripsi"];
@@ -27,6 +40,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         if ($_POST["form_type"] == "main_menu"){
             truncateTable($conn,"detaillowongan");
             header("location: main_page.php");
+        }
+    }
+    if (isset($_POST["hapusLowongan"])) {
+        if ($_POST["hapusLowongan"] == "hapus" && permission($conn,$namaperusahaan)){
+            $conn->query("DELETE FROM loker WHERE _namaPerusahaan = '$namaperusahaan' and _job = '$jobdesk'");
+            header("location: main_page.php");
+        }
+    }
+    if (isset($_POST["editLowongan"])) {
+        if ($_POST["editLowongan"] == "edit" && permission($conn,$namaperusahaan)){
+            $conn->query("UPDATE detaillowongan SET _edit = true WHERE _namaPerusahaan = '$namaperusahaan' and _job = '$jobdesk'");
+            header("location: pengajuanPage.php");
         }
     }
 }
@@ -280,8 +305,35 @@ img {
                     </td>
                 </tr>
             </table>
+        
+            <?php
+            if (companyOrClient($conn) == "client"){
+                echo "<a href='pengajuanPage.php' class='apply-btn'>Ajukan Lamaran</a>";
+            }
+            else if (permission($conn,$namaperusahaan)){
+                echo "<table>";
+                echo "
+                <tr>
+                    <td>
+                        <form method='post'>
+                            <input type='hidden' name='hapusLowongan' value='hapus'>
+                            <button type='submit' class='apply-btn' style='background-color:#cf151e;color:white'>Hapus Lowongan</button>
+                        </form>
+                    </td>";
+                echo "
+                    <td>
+                        <form method='post'>
+                            <input type='hidden' name='editLowongan' value='edit'>
+                            <button type='submit' class='apply-btn'>Edit</button>
+                        </form>
+                    </td>
+                <tr>";
+                echo "</table>";
+            }
+                
+            
+            ?>
 
-            <a href="pengajuanPage.php" class="apply-btn">Ajukan Lamaran</a>
         </div>
         <div class="job-sidebar">
             <h3>Informasi Tambahan</h3>
@@ -326,12 +378,7 @@ img {
     </div>
 
     <?php
-        if (companyOrClient($conn)=="company"){
-        $curEmail = $conn->query("SELECT * FROM current_company")->fetch_assoc()["_email"];
-        $currentnama = $conn->query("SELECT * FROM company where _email = '$curEmail'")->fetch_assoc()["_namaPerusahaan"];
-
-        if ($namaperusahaan == $currentnama){
-
+        if (permission($conn,$namaperusahaan)){
             $result = $conn->query("SELECT * FROM cv WHERE _namaPerusahaan = '$namaperusahaan' AND _job = '$jobdesk'");
             if ($result->num_rows > 0) {
                 echo "<div class='job-container'>";
@@ -358,13 +405,12 @@ img {
                         <td>{$row['_job']} </td>
                     </tr>";
                 }
-            echo "</table>";
-            echo "</div>";
-        } else {
-            echo "No records found";
-        }
-        $conn->close();
+                echo "</table>";
+                echo "</div>";
+            } else {
+                echo "<p style='text-align:center'>Belum ada lamaran <p>";
             }
+            $conn->close();
         }
     ?>
 

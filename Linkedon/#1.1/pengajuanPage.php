@@ -9,10 +9,12 @@ $nama = getName($conn,$email);
 $name = "";
 $namaPerusahaan = "";
 $job = "";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
     if (isset($_POST["form_type"])) {
         if ($_POST["form_type"] == "main_menu"){
             if ($tipe == "company"){
+                truncateTable($conn,"detaillowongan");
                 header("location: main_page.php");
             }
             else if ($tipe == "client"){
@@ -47,7 +49,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     if (isset($_POST["Lowongan"])) {
         if ($_POST["Lowongan"] == "UnggahLowongan"){
-            echo "berhasil";
             $nama = $_POST["namaPerusahaan"];
             $jobdesk = $_POST["jobdesk"];
             $deskripsi = $_POST["deskripsi"];
@@ -61,7 +62,54 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             $gajiPer = $_POST["terimagaji"];
             $foto = getFile("../Images");
 
-            $conn->query("INSERT INTO loker VALUES('$deskripsi','$kualifikasi','$nama','$gaji','$gajiPer','$foto','$deadline','$lokasi','$jenis','$remote','$jobdesk','$keuntungan')");
+            $check = $conn->query("SELECT * FROM loker WHERE _namaPerusahaan = '$nama' and _job = '$jobdesk'")->num_rows>0;
+            if (!$check){
+                $conn->query("INSERT INTO loker VALUES('$deskripsi','$kualifikasi','$nama','$gaji','$gajiPer','$foto','$deadline','$lokasi','$jenis','$remote','$jobdesk','$keuntungan')");
+                $check = $conn->query("SELECT * FROM loker WHERE _namaPerusahaan = '$nama' AND _job = '$jobdesk'")->num_rows>0;
+                if ($check){
+                    truncateTable($conn,"detaillowongan");
+                    header("Location: main_page.php");
+                }
+                else{
+                    echo "Gagal mengunggah!";
+                }
+            }
+            else{
+                echo "Lowongan ".$jobdesk." di perusahaan ".$nama." sudah ter-unggah!";
+            }
+        }
+    }
+
+    if (isset($_POST["Edit"])) {
+        if ($_POST["Edit"] == "EditLowongan"){
+            $nama = $_POST["namaPerusahaan"];
+            $jobdesk = $_POST["jobdesk"];
+            $deskripsi = $_POST["deskripsi"];
+            $kualifikasi = $_POST["kualifikasi"];
+            $keuntungan = $_POST["keuntungan"];
+            $jenis = $_POST["jenis"];
+            $lokasi = $_POST["lokasi"];
+            $deadline = $_POST["deadline"];
+            $remote = $_POST["remote"];
+            $gaji = $_POST["gaji"];
+            $gajiPer = $_POST["terimagaji"];
+            $foto = getFile("../Images");
+
+            $check = $conn->query("SELECT * FROM loker WHERE _namaPerusahaan = '$nama' and _job = '$jobdesk'")->num_rows>0;
+            if ($check){
+                $conn->query("UPDATE loker SET _deskripsi = '$deskripsi',_kualifikasi = '$kualifikasi',_namaPerusahaan = '$nama',_gaji = '$gaji',_gajiPer = '$gajiPer',_pictpath = '$foto',_deadline = '$deadline',_alamat = '$lokasi',_tipe = '$jenis',_remote = '$remote',_job = '$jobdesk',_keuntungan = '$keuntungan' WHERE _namaPerusahaan = '$nama' and _job = '$jobdesk'");
+                $check = $conn->query("SELECT * FROM loker WHERE _namaPerusahaan = '$nama' AND _job = '$jobdesk'")->num_rows>0;
+                if ($check){
+                    truncateTable($conn,"detaillowongan");
+                    header("Location: main_page.php");
+                }
+                else{
+                    echo "Gagal mengunggah!";
+                }
+            }
+            else{
+                echo "Lowongan ".$jobdesk." di perusahaan ".$nama." tidak di temukan!";
+            }
         }
     }
     
@@ -227,71 +275,139 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         }
         
         if ($tipe == "company"){
-            echo "
-            <div class='container'>
-                <h1>Buat Lowongan Kerja</h1>
+            $checkEditRow = $conn->query("SELECT * FROM detaillowongan")->fetch_assoc();
+            $checkEdit = $checkEditRow["_edit"];
+            $namaPerusahaan = $checkEditRow["_namaPerusahaan"];
+            $jobdesk = $checkEditRow["_job"];
+
+            $checkLoker = $conn->query("SELECT * FROM loker where _namaPerusahaan = '$namaPerusahaan' AND _job = '$jobdesk'");
+            $lokerRow = $checkLoker->fetch_assoc();
+            if ($checkLoker->num_rows>0 && $checkEdit){
+                echo "
+                <div class='container'>
+                <h1>Edit Lowongan Kerja</h1>
                 <form method='post' enctype='multipart/form-data'>
-                    <input type='hidden' name='Lowongan' value='UnggahLowongan'>
-
-                    <label for='nama'>Nama Perusahaan : </label>
-                    <input type='text' id='nama' name='namaPerusahaan' value='$nama' placeholder='Masukkan Nama Perusahaan' readonly required>
-
-                    <label for='Jobdesk'>JobDesk : </label>
-                    <input type='text' id='Jobdesk' name='jobdesk' placeholder='Masukkan JobDesk' required>
-                    
-                    <label for='deskripsi'>Deskripsi : </label>
-                    <textarea name='deskripsi' id='deskripsi' cols='30' rows='10'></textarea>
-                    
-                    <label for='kualifikasi'>Kualifikasi : </label>
-                    <textarea name='kualifikasi' id='kualifikasi' cols='30' rows='10'></textarea>
-
-                    <label for='keuntungan'>Keuntungan : </label>
-                    <textarea name='keuntungan' id='keuntungan' cols='30' rows='10'></textarea>
-
-                    <label for='jenis'>Jenis : </label>
-                    <select name='jenis' id='jenis' required>
-                        <option value='Full Time'>Full Time</option>
-                        <option value='Part Time'>Part Time</option>
-                    </select>
-
-                    <label for='gaji'>Gaji : </label>
-                    <input type='number' id='gaji' name='gaji' placeholder='Masukan gaji' required>
-                    
-                    <label for='terimaGaji'>Terima gaji : </label>
-                    <select name='terimagaji' id='terimaGaji' required>
-                        <option value='Hari'>Per Hari</option>
-                        <option value='Minggu'>Per Minggu</option>
-                        <option value='Bulan'>Per Bulan</option>
-                        <option value='Tahun'>Per Tahun</option>
-                    </select>
-                    
-                    
-
-                    <label for='lokasi'>lokasi : </label>
-                    <input type='text' id='lokasi' name='lokasi' placeholder='Masukan alamat' required>
-                    
-                    <label for='deadline'>Deadline :</label>
-                    <input type='date' id='deadline' name='deadline' required>
-                    
-                    <label for='remote'>Remote : </label>
-                    <select name='remote' id='remote' required>
+                <input type='hidden' name='Edit' value='EditLowongan'>
+                
+                <label for='nama'>Nama Perusahaan : </label>
+                <input type='text' id='nama' name='namaPerusahaan' value='$nama' placeholder='Masukkan Nama Perusahaan' readonly required>
+                
+                <label for='Jobdesk'>JobDesk : </label>
+                <input type='text' id='Jobdesk' name='jobdesk' placeholder='Masukkan JobDesk' value='{$lokerRow['_job']}' required>
+                
+                <label for='deskripsi'>Deskripsi : </label>
+                <textarea name='deskripsi' id='deskripsi' cols='30' rows='10' >{$lokerRow['_deskripsi']}</textarea>
+                
+                <label for='kualifikasi'>Kualifikasi : </label>
+                <textarea name='kualifikasi' id='kualifikasi' cols='30' rows='10'>{$lokerRow['_kualifikasi']}</textarea>
+                
+                <label for='keuntungan'>Keuntungan : </label>
+                <textarea name='keuntungan' id='keuntungan' cols='30' rows='10'>{$lokerRow['_keuntungan']}</textarea>
+                
+                <label for='jenis'>Jenis : </label>
+                <select name='jenis' id='jenis' required>
+                <option value='Full Time'>Full Time</option>
+                <option value='Part Time'>Part Time</option>
+                </select>
+                
+                <label for='gaji'>Gaji : </label>
+                <input type='number' id='gaji' name='gaji' placeholder='Masukan gaji' value={$lokerRow['_gaji']} required>
+                
+                <label for='terimaGaji'>Terima gaji : </label>
+                <select name='terimagaji' id='terimaGaji' required>
+                    <option value='Hari'>Per Hari</option>
+                    <option value='Minggu'>Per Minggu</option>
+                    <option value='Bulan'>Per Bulan</option>
+                    <option value='Tahun'>Per Tahun</option>
+                </select>
+                
+                
+                
+                <label for='lokasi'>lokasi : </label>
+                <input type='text' id='lokasi' name='lokasi' placeholder='Masukan alamat' value='{$lokerRow['_alamat']}' required>
+                
+                <label for='deadline'>Deadline :</label>
+                <input type='date' id='deadline' name='deadline' value='{$lokerRow['_deadline']}' required>
+                
+                <label for='remote'>Remote : </label>
+                <select name='remote' id='remote' required>
                         <option value='false'>tidak</option>
                         <option value='true'>ya</option>
-                    </select>
-                    
-                    <label for='foto'>Unggah foto :</label>
-                    <input type='file' name='image' id='foto' required>
-                    
-                    <button type='submit' class='submit-btn'>Unggah Lowongan</button>
+                </select>
+                
+                <label for='foto'>Unggah foto :</label>
+                <input type='file' name='image' id='foto' required>
+                <button type='submit' class='submit-btn'>Edit Lowongan</button>
                 </form>
-            </div>
-            ";
-        }
+                </div>
+                ";
+            }
+            else{
+                echo "
+                <div class='container'>
+                <h1>Buat Lowongan Kerja</h1>
+                <form method='post' enctype='multipart/form-data'>
+                <input type='hidden' name='Lowongan' value='UnggahLowongan'>
+                
+                <label for='nama'>Nama Perusahaan : </label>
+                <input type='text' id='nama' name='namaPerusahaan' value='$nama' placeholder='Masukkan Nama Perusahaan' readonly required>
+                
+                <label for='Jobdesk'>JobDesk : </label>
+                <input type='text' id='Jobdesk' name='jobdesk' placeholder='Masukkan JobDesk' required>
+                
+                <label for='deskripsi'>Deskripsi : </label>
+                <textarea name='deskripsi' id='deskripsi' cols='30' rows='10'></textarea>
+                
+                <label for='kualifikasi'>Kualifikasi : </label>
+                <textarea name='kualifikasi' id='kualifikasi' cols='30' rows='10'></textarea>
+                
+                <label for='keuntungan'>Keuntungan : </label>
+                <textarea name='keuntungan' id='keuntungan' cols='30' rows='10'></textarea>
+                
+                <label for='jenis'>Jenis : </label>
+                <select name='jenis' id='jenis' required>
+                <option value='Full Time'>Full Time</option>
+                <option value='Part Time'>Part Time</option>
+                </select>
+                
+                <label for='gaji'>Gaji : </label>
+                <input type='number' id='gaji' name='gaji' placeholder='Masukan gaji' required>
+                
+                <label for='terimaGaji'>Terima gaji : </label>
+                <select name='terimagaji' id='terimaGaji' required>
+                <option value='Hari'>Per Hari</option>
+                <option value='Minggu'>Per Minggu</option>
+                <option value='Bulan'>Per Bulan</option>
+                <option value='Tahun'>Per Tahun</option>
+                </select>
+                
+                
+                
+                <label for='lokasi'>lokasi : </label>
+                <input type='text' id='lokasi' name='lokasi' placeholder='Masukan alamat' required>
+                
+                <label for='deadline'>Deadline :</label>
+                <input type='date' id='deadline' name='deadline' required>
+                
+                <label for='remote'>Remote : </label>
+                <select name='remote' id='remote' required>
+                        <option value='false'>tidak</option>
+                        <option value='true'>ya</option>
+                </select>
+                
+                <label for='foto'>Unggah foto :</label>
+                <input type='file' name='image' id='foto' required>
+                <button type='submit' class='submit-btn'>Unggah Lowongan</button>
+                </form>
+                </div>
+                ";
+                }
+            }
         ?>
         
-    <footer>
-        <p>&copy; 2025 Portal Lowongan Kerja | Dibuat dengan sepenuh hati😍</p>
-    </footer>
+        <footer>
+            <p>&copy; 2025 Portal Lowongan Kerja | Dibuat dengan sepenuh hati😍</p>
+        </footer>
         
 </body>
 </html>
