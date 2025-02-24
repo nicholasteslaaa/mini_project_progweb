@@ -71,32 +71,31 @@ footer {
     color: #fffdfd;
 }
 
-fieldset{
-    width: fit-content;
+fieldset {
+    width: 400px; /* Fixed width for consistency */
+    min-height: 300px; /* Ensure a minimum height */
     color: black;
-    height: fit-content;
     border-radius: 10%;
-    padding: 5%;
+    padding: 20px; /* Increased padding for better spacing */
     background-color: #ebe5c1;
 
     display: flex;
     flex-direction: column;
     text-align: center;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.815);
-    
 }
+
 h1{
     font-family: Arial, Helvetica, sans-serif;
     font-size: 300%;
-    margin-top: -10%;
 }
-div input{
-    font-family: Arial, Helvetica, sans-serif;
-    width:300px;
-    height:40px;
+div input {
+    width: 100%; /* Make input fields adapt to fieldset width */
+    height: 40px;
     background-color: #bab18d60;
     border-radius: 10%;
 }
+
 div{
     width: 100%;
     display: flex;
@@ -115,6 +114,12 @@ button{
     background-color: #bab18d ;
     font-size: x-large;
 }
+aside {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
 </style>
 
 <body>
