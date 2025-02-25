@@ -1,0 +1,162 @@
+.logout-button{
+    width: 160px;
+    height: fit-content;
+    background: #B9B28A;
+    color: black;
+    border: black;
+    cursor: pointer;
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-bottom: 0px  ;
+    padding: 10px;
+
+    font-size: larger;
+}
+.Account{
+    width: 160px;
+    height: fit-content;
+    top: 33px;
+    right: 20px;
+    background: #B9B28A;
+    color: black;
+    border: black;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+
+/*bawahnya*/
+.hero{
+    background: url("../../Images/Brown Organic Abstract Zoom Virtual Background (1).png") no-repeat center center/cover;
+    color: black;
+    text-align: center;
+    padding: 50px 20px;;
+}
+
+.hero h2 {
+    font-size: 40px;
+}
+
+/*Form Pencarian*/
+.search-box{
+    text-align: center;
+    margin: 20px 0;
+}
+
+.search-box input {
+    width: 50%;
+    padding: 10px;
+    border: 1px solid #B9B28A;
+    border-radius: 5px;
+}
+
+.search-box button {
+    padding: 10px 15px;
+    background: #B9B28A; 
+    color: black;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/*DAFTAR LOWONGAN*/
+.job-container{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.job-item{
+    background: #EBE5C2;
+    border: 1px solid #B9B28A;
+    padding: 15px;
+    width: 300px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    border-radius: 5px;
+}
+
+.job-item h3 {
+    font-size: 14px;
+    color: #504B38;
+}
+
+.job-item p {
+    font-size: 14px;
+    color: #504B38;
+}
+
+.btn{
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px;
+    background: #B9B28A;
+    color: black;
+    text-decoration: dashed;
+    border-radius: 5px;
+}
+
+/*footer*/
+footer {
+width: 100%;
+text-align: center;
+font-size:larger;
+padding: 5px;
+position: absolute; /* Keep header at the top */
+bottom: 0;
+
+background-color: #504b38;
+color: #fffdfd;
+}
+
+
+
+.dropbtn {
+background-color:transparent;
+color: white;
+border-radius: 100%;
+border: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+position: absolute;
+top: 1px;
+right: 10px;
+/* transform: translateY(-50%); */
+color: black;
+border: black;
+cursor: pointer;
+border-radius: 5px;
+/* text-decoration:none; */
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+display: none;
+position: absolute;
+right: 1px;
+background-color: transparent;
+border-radius: 15%;
+min-width: 160px;
+box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+color: black;
+text-decoration: none;
+display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd;}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {background-color:rgba(80, 75, 56, 0.77);}

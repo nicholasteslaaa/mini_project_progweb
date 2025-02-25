@@ -48,8 +48,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     <header>
         <span><h1 style="text-align:left"><b>LinkedOn</b></h1></span>
         <div class="dropdown">
-            <button class="dropbtn"><img src="../decoration/menuHamburger.png" width="50px" alt=""></button>
-            <div class="dropdown-content">
+        <button class="dropbtn"><img src="../decoration/menuHamburger.png" width="50px" alt=""></button>
+        <div class="dropdown-content">
                 <form action="" method="post"> 
                     <input type="hidden" name="form_type" value="Account">
                     <button type="submit" class="Account">

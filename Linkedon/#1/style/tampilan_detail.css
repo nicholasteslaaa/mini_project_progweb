@@ -1,0 +1,146 @@
+.main_table{
+    border-collapse: collapse;
+}
+
+.main_table td:nth-child(2) {
+    width: 70%;
+}
+
+img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .back-link {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    background-color: transparent;
+    border: none;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    display: inline-block; /* Ensures the button behaves like a button */
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.back-link:hover {
+    background-color: white;
+    color: black; /* Fix: Make text visible */
+    
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 40px;
+    flex-wrap: wrap;
+}
+
+.job-details, .job-sidebar {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.job-details {
+    width: 60%;
+}
+
+.job-sidebar {
+    width: 30%;
+    background: #EBE5C2;
+}
+
+.job-details h2, .job-sidebar h3 {
+    color: #504B38;
+}
+
+.apply-btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 15px;
+    background: #B9B28A;
+    color: black;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.apply-btn:hover {
+    background: #A89E79;
+}
+
+.kolomtable{
+    width: 35vh;
+}
+
+.unorderedlist{
+    list-style-position: inside;
+}
+
+.unorderedlist li::marker{
+    font-weight: bold;
+}
+
+.Tablelist{
+    vertical-align: top;
+}
+
+.kelompokTable1{
+    border: 0;
+    background-color: rgba(128, 128, 128, 0.264);
+}
+
+.kelompokTable2{
+    border: 0;
+    background-color: rgba(57, 44, 0, 0.186);
+}
+
+.panjanginSyarat{
+    width: 100vh;
+}
+
+.kolomtablekecil{
+    width: 16vh;
+}
+
+.CV {
+    border: 2px solid black; /* Outer border */
+    border-collapse: collapse; /* Merge cell borders */
+    width: 80%; /* Adjust width if needed */
+    margin: 20px auto; /* Center horizontally */
+}
+
+.CV th, .CV td {
+    border: 1px solid black; /* Borders for each cell */
+    padding: 10px; /* Add spacing inside cells */
+    text-align: center; /* Align text */
+}
+
+.CV thead {
+    background-color: #504B38; /* Header background */
+    color: white; /* Header text color */
+}
+
+.download-btn {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.download-btn:hover {
+    background-color: #218838;
+}
