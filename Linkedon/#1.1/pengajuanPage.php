@@ -114,115 +114,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     
 }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style/tampilan_halaman.css">
+    <link rel="stylesheet" href="style/tampilan_pengajuan.css">
+    
     <title>Pengajuan Lamaran</title>
-
-    <style>
-
-        /*Header*/
-        header {
-    background: #504B38;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    position: relative;
-}
-
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #F8F3D9;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            background: #EBE5C2;
-            max-width: 400px;
-            margin: 50px auto;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            margin-bottom: 20px;
-            color: #504B38;
-        }
-        label {
-            display: block;
-            text-align: left;
-            margin-top: 10px;
-            font-weight: bold;
-            color: #504B38;
-        }
-        input, select, textarea, button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #B9B28A;
-            border-radius: 5px;
-            background-color: #F8F3D9;
-            color: #504B38;
-        }
-        .submit-btn {
-            background-color: #504B38;
-            color: white;
-            border: none;
-            cursor: pointer;
-            margin-top: 15px;
-        }
-        .submit-btn:hover {
-            background-color: #B9B28A;
-        }
-        .thank-you {
-            display: none;
-            margin-top: 20px;
-            font-weight: bold;
-            color: #504B38;
-        }
-
-        /*footer*/
-    footer{
-        text-align: center;
-        background: #504B38; 
-        color: white;
-        padding: 20px;
-        margin-top: 81px;
-    }
-    
-.back-link {
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: white;
-    background-color: transparent;
-    border: none;
-    text-decoration: none;
-    font-size: 18px;
-    padding: 10px 15px;
-    border-radius: 5px;
-    display: inline-block; /* Ensures the button behaves like a button */
-    cursor: pointer;
-    transition: background 0.3s ease, color 0.3s ease;
-    width: 280px;
-    height: 50px ;
-}
-
-.back-link:hover {
-    background-color: white;
-    color: black; /* Fix: Make text visible */
-    
-}
-
-    </style>
 </head>
 <body>
     <header>
@@ -339,7 +240,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                     </select>
                     
                     <label for='foto'>Unggah foto :</label>
-                    <input type='file' name='image' id='foto' required>
+                    <input type='file' name='image' id='foto' accept=.jpg,.png,.jpeg required>
                     <button type='submit' class='submit-btn'>Edit Lowongan</button>
                     </form>
                     </div>
@@ -400,7 +301,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                 </select>
                 
                 <label for='foto'>Unggah foto :</label>
-                <input type='file' name='image' id='foto' required>
+                <input type='file' name='image' id='foto' accept=.jpg,.png,.jpeg required>
                 <button type='submit' class='submit-btn'>Unggah Lowongan</button>
                 </form>
                 </div>
@@ -410,7 +311,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         ?>
         
         <footer>
-            <p>&copy; 2025 Portal Lowongan Kerja | Dibuat dengan sepenuh hati😍</p>
+            2025 Portal Lowongan Kerja | Dibuat dengan sepenuh hati😍
         </footer>
         
 </body>
