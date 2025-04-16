@@ -145,7 +145,6 @@ function mainPage($nama,$job,$lokasi,$tipe,$gaji){
     }
     $joinedString = implode(' AND ', $temp);
     $query .= $joinedString;
-    echo $query;
 
     if ($counter > 0) {
         return $query;
