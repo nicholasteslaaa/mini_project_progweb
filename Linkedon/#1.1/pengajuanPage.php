@@ -1,35 +1,32 @@
 <?php
 include "method.php";
-$conn = openDB("localhost","root","","linkedon");
+require "DBconnection.php";
+session_start();
 
-$tipe = companyOrClient($conn);
-$email = getEmail($conn);
+$tipe = $_SESSION["tipeUser"]; 
+$email = $_SESSION["email"];
+$namaPerusahaan = $_SESSION["namaPerusahaan"];
+$job = $_SESSION["job"];
+
 $row = $conn->query("SELECT * FROM $tipe WHERE _email = '$email'");
 $nama = getName($conn,$email);
-$name = "";
-$namaPerusahaan = "";
-$job = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
     if (isset($_POST["form_type"])) {
         if ($_POST["form_type"] == "main_menu"){
             if ($tipe == "company"){
-                truncateTable($conn,"detaillowongan");
+                $_SESSION["edit"] = "false";
                 header("location: main_page.php");
             }
             else if ($tipe == "client"){
                 header("location: detail.php");
             }
         }
-
-        
-        
     }
     if (isset($_POST["Lamaran"])) {
         if ($_POST["Lamaran"] == "UnggahLamaran"){
-            $detailrow = $conn->query("select * from detaillowongan")->fetch_assoc();
-            $namaPerusahaan = $detailrow["_namaPerusahaan"];
-            $job = $detailrow["_job"];
+            $namaPerusahaan = $_SESSION["namaPerusahaan"];
+            $job = $_SESSION["job"];
             $name = $_POST['name'];
             $alamat = $_POST['alamat'];
             $phone = $_POST['phone'];
@@ -51,23 +48,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         if ($_POST["Lowongan"] == "UnggahLowongan"){
             $nama = $_POST["namaPerusahaan"];
             $jobdesk = $_POST["jobdesk"];
+            $KategoriJob = $_POST["Jobkategori"];
             $deskripsi = $_POST["deskripsi"];
             $kualifikasi = $_POST["kualifikasi"];
             $keuntungan = $_POST["keuntungan"];
             $jenis = $_POST["jenis"];
             $lokasi = $_POST["lokasi"];
             $deadline = $_POST["deadline"];
-            $remote = $_POST["remote"];
             $gaji = $_POST["gaji"];
             $gajiPer = $_POST["terimagaji"];
             $foto = getFile("../Images");
 
             $check = $conn->query("SELECT * FROM loker WHERE _namaPerusahaan = '$nama' and _job = '$jobdesk'")->num_rows>0;
             if (!$check){
-                $conn->query("INSERT INTO loker VALUES('$deskripsi','$kualifikasi','$nama','$gaji','$gajiPer','$foto','$deadline','$lokasi','$jenis','$remote','$jobdesk','$keuntungan')");
+                $conn->query("INSERT INTO loker VALUES('$deskripsi','$kualifikasi','$nama','$gaji','$gajiPer','$foto','$deadline','$lokasi','$jenis','$jobdesk','$KategoriJob','$keuntungan')");
                 $check = $conn->query("SELECT * FROM loker WHERE _namaPerusahaan = '$nama' AND _job = '$jobdesk'")->num_rows>0;
                 if ($check){
-                    truncateTable($conn,"detaillowongan");
+                    $_SESSION["edit"] = "false";
                     header("Location: main_page.php");
                 }
                 else{
@@ -84,23 +81,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         if ($_POST["Edit"] == "EditLowongan"){
             $nama = $_POST["namaPerusahaan"];
             $jobdesk = $_POST["jobdesk"];
+            $KategoriJob = $_POST["Jobkategori"];
             $deskripsi = $_POST["deskripsi"];
             $kualifikasi = $_POST["kualifikasi"];
             $keuntungan = $_POST["keuntungan"];
             $jenis = $_POST["jenis"];
             $lokasi = $_POST["lokasi"];
             $deadline = $_POST["deadline"];
-            $remote = $_POST["remote"];
             $gaji = $_POST["gaji"];
             $gajiPer = $_POST["terimagaji"];
             $foto = getFile("../Images");
 
             $check = $conn->query("SELECT * FROM loker WHERE _namaPerusahaan = '$nama' and _job = '$jobdesk'")->num_rows>0;
             if ($check){
-                $conn->query("UPDATE loker SET _deskripsi = '$deskripsi',_kualifikasi = '$kualifikasi',_namaPerusahaan = '$nama',_gaji = '$gaji',_gajiPer = '$gajiPer',_pictpath = '$foto',_deadline = '$deadline',_alamat = '$lokasi',_tipe = '$jenis',_remote = '$remote',_job = '$jobdesk',_keuntungan = '$keuntungan' WHERE _namaPerusahaan = '$nama' and _job = '$jobdesk'");
+                $conn->query("UPDATE loker SET _deskripsi = '$deskripsi',_kualifikasi = '$kualifikasi',_namaPerusahaan = '$nama',_gaji = '$gaji',_gajiPer = '$gajiPer',_pictpath = '$foto',_deadline = '$deadline',_alamat = '$lokasi',_tipe = '$jenis',_job = '$jobdesk',_jobKategori = '$KategoriJob',_keuntungan = '$keuntungan' WHERE _namaPerusahaan = '$nama' and _job = '$jobdesk'");
                 $check = $conn->query("SELECT * FROM loker WHERE _namaPerusahaan = '$nama' AND _job = '$jobdesk'")->num_rows>0;
                 if ($check){
-                    truncateTable($conn,"detaillowongan");
+                    $_SESSION["edit"] = "false";
                     header("Location: main_page.php");
                 }
                 else{
@@ -169,24 +166,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                     <button type='submit' class='submit-btn'>Kirim Lamaran</button>
                 </form>
                 ";
-            if (checkCV($conn,$name,$namaPerusahaan,$job)){
+            if (checkCV($conn,$nama,$namaPerusahaan,$job)){
                 echo "<p class='Terimakasih'> Terimakasih sudah memasukan lamaran🙏</p>";
             }
             echo "</div>";
         }
         
         if ($tipe == "company"){
-            $checkDetail = $conn->query("SELECT * FROM detaillowongan");
-            if($checkDetail->num_rows>0){
-
-                $checkDetailRow = $checkDetail->fetch_assoc();
-                $namaPerusahaan = $checkDetailRow["_namaPerusahaan"];
-                $jobdesk = $checkDetailRow["_job"];
-                $checkEdit = $checkDetailRow["_edit"];
+            $namaPerusahaan = $_SESSION["namaPerusahaan"];
+            $jobdesk = $_SESSION["job"];
+            $checkEdit = $_SESSION["edit"];
+            
+            $checkLoker = $conn->query("SELECT * FROM loker where _namaPerusahaan = '$namaPerusahaan' AND _job = '$jobdesk'");
+            $lokerRow = $checkLoker->fetch_assoc();
+            if($checkEdit == "true"){
                 
-                $checkLoker = $conn->query("SELECT * FROM loker where _namaPerusahaan = '$namaPerusahaan' AND _job = '$jobdesk'");
-                $lokerRow = $checkLoker->fetch_assoc();
-                if ($checkLoker->num_rows>0 && $checkEdit){
+                if ($checkLoker->num_rows>0){
                     echo "
                 <div class='container'>
                 <h1>Edit Lowongan Kerja</h1>
@@ -198,6 +193,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                 
                 <label for='Jobdesk'>JobDesk : </label>
                 <input type='text' id='Jobdesk' name='jobdesk' placeholder='Masukkan JobDesk' value='{$lokerRow['_job']}' required>
+
+                <label for='Jobkategori'>Job kategori : </label>
+                <input type='text' id='Jobkategori' name='Jobkategori' placeholder='{$lokerRow['_jobKategori']}' required>
                 
                 <label for='deskripsi'>Deskripsi : </label>
                 <textarea name='deskripsi' id='deskripsi' cols='30' rows='10' >{$lokerRow['_deskripsi']}</textarea>
@@ -212,6 +210,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                 <select name='jenis' id='jenis' required>
                 <option value='Full Time'>Full Time</option>
                 <option value='Part Time'>Part Time</option>
+                <option value='Remote'>Remote</option>
+                <option value='FreeLance'>FreeLance</option>
                 </select>
                 
                 <label for='gaji'>Gaji : </label>
@@ -223,31 +223,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                     <option value='Minggu'>Per Minggu</option>
                     <option value='Bulan'>Per Bulan</option>
                     <option value='Tahun'>Per Tahun</option>
-                    </select>
+                </select>
                     
-                    
-                    
-                    <label for='lokasi'>lokasi : </label>
-                    <input type='text' id='lokasi' name='lokasi' placeholder='Masukan alamat' value='{$lokerRow['_alamat']}' required>
-                    
-                    <label for='deadline'>Deadline :</label>
-                    <input type='date' id='deadline' name='deadline' value='{$lokerRow['_deadline']}' required>
-                    
-                    <label for='remote'>Remote : </label>
-                    <select name='remote' id='remote' required>
-                    <option value='false'>tidak</option>
-                    <option value='true'>ya</option>
-                    </select>
-                    
-                    <label for='foto'>Unggah foto :</label>
-                    <input type='file' name='image' id='foto' accept=.jpg,.png,.jpeg required>
-                    <button type='submit' class='submit-btn'>Edit Lowongan</button>
-                    </form>
-                    </div>
-                    ";
-                }
-            }
-            else{
+                <label for='lokasi'>lokasi : </label>
+                <input type='text' id='lokasi' name='lokasi' placeholder='Masukan alamat' value='{$lokerRow['_alamat']}' required>
+                
+                <label for='deadline'>Deadline :</label>
+                <input type='date' id='deadline' name='deadline' value='{$lokerRow['_deadline']}' required>
+                
+                <label for='foto'>Unggah foto :</label>
+                <input type='file' name='image' id='foto' accept=.jpg,.png,.jpeg required>
+                <button type='submit' class='submit-btn'>Edit Lowongan</button>
+                </form>
+                </div>
+                ";}
+            }else{
                 echo "
                 <div class='container'>
                 <h1>Buat Lowongan Kerja</h1>
@@ -259,6 +249,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                 
                 <label for='Jobdesk'>JobDesk : </label>
                 <input type='text' id='Jobdesk' name='jobdesk' placeholder='Masukkan JobDesk' required>
+                
+                <label for='Jobkategori'>Job kategori : </label>
+                <input type='text' id='Jobkategori' name='Jobkategori' placeholder='Masukkan kategori job' required>
                 
                 <label for='deskripsi'>Deskripsi : </label>
                 <textarea name='deskripsi' id='deskripsi' cols='30' rows='10'></textarea>
@@ -293,12 +286,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                 
                 <label for='deadline'>Deadline :</label>
                 <input type='date' id='deadline' name='deadline' required>
-                
-                <label for='remote'>Remote : </label>
-                <select name='remote' id='remote' required>
-                        <option value='false'>tidak</option>
-                        <option value='true'>ya</option>
-                </select>
                 
                 <label for='foto'>Unggah foto :</label>
                 <input type='file' name='image' id='foto' accept=.jpg,.png,.jpeg required>

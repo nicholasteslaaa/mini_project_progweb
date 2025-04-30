@@ -1,4 +1,5 @@
 <?php
+require "DBconnection.php";
 function DeleteAccount($conn,$curEmail,$usertype){
     $conn->query("Delete from $usertype where _email = '$curEmail'");
     truncateTable($conn,"current_".$usertype);
@@ -115,19 +116,14 @@ function getPDF($folder) {
     return move_uploaded_file($_FILES["pdf"]["tmp_name"], $target_file) ? $target_file : false;
 }
 
-function openDB($servername,$username,$password,$dbname){
-    $conn = new mysqli($servername,$username,$password,$dbname);
-    return $conn;
-}
-
 function closeDB($conn){
     $conn->close();
 }
 
-function mainPage($nama,$job,$lokasi,$tipe,$gaji){
+function mainPage($nama,$job,$jobKategori,$lokasi,$tipe,$gaji){
     $query = "SELECT * FROM loker WHERE ";
-    $input = [$nama,$job,$lokasi,$tipe,$gaji];
-    $cell = ["_namaPerusahaan","_job","_alamat","_tipe","_gaji"];
+    $input = [$nama,$job,$jobKategori,$lokasi,$tipe,$gaji];
+    $cell = ["_namaPerusahaan","_job","_jobKategori","_alamat","_tipe","_gaji"];
     $temp = [];
     $counter = 0;
     for ($i = 0; $i < count($input); $i++) {

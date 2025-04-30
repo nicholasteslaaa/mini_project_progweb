@@ -1,15 +1,10 @@
 <?php
 include "method.php";
-$conn = openDB("localhost","root","","linkedon");
-$tipe = companyOrClient($conn);
-$current = $conn->query("select * from current_$tipe");
-$curRow = $current->fetch_assoc();
-$curEmail = $curRow["_email"];
+require "DBconnection.php";
+session_start();
 
-$result = $conn->query("select * from $tipe where _email = '$curEmail'");
-$row = $result->fetch_assoc();
-$usertype = $row["_user_type"];
-$curusertype = "current_".$row["_user_type"];
+$tipe = $_SESSION["tipeUser"];
+$curEmail = $_SESSION["email"];
 
 $mainPageResult = $conn->query("SELECT *,FORMAT(_gaji, 0, 'de_DE') AS gaji FROM loker");
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -19,23 +14,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             header("location: login_page.php");
         }
         if ($_POST["form_type"] == "logout"){
-            truncateTable($conn,$curusertype);
-            header("location: login_page.php");
+            header("location: logout.php");
         }    
     }
     if (isset($_POST["detailLowongan"])) {
-        truncateTable($conn,"detaillowongan");
         list($namaPerusahaan, $job) = explode("|", $_POST["detailLowongan"]);
-        $conn->query("INSERT INTO detaillowongan values('$namaPerusahaan','$job',false)");
+        $_SESSION["namaPerusahaan"] = $namaPerusahaan;
+        $_SESSION["job"] = $job;
         header("location: detail.php");
     }
     if (isset($_POST["Search"])) {
         $Nama =  $_POST["Nama"];
-        $Kategori =  $_POST["Job"];
+        $job =  $_POST["Job"];
+        $jobKategori = $_POST["Kategori"];
         $Lokasi =  $_POST["Lokasi"];
         $Tipe =  $_POST["Tipe"];
         $Gaji =  $_POST["Gaji"];
-        $query = mainPage($Nama,$Kategori,$Lokasi,$Tipe,$Gaji);
+        $query = mainPage($Nama,$job,$jobKategori,$Lokasi,$Tipe,$Gaji);
         $mainPageResult = $conn->query($query);
         
     }
@@ -75,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                     </button>
                 </form>
                 <?php 
-                if ($usertype == "Company"){
+                if ($tipe == "company"){
                     echo "
                     <form action='' method='post'>
                         <input type='hidden' name='buatLowongan' value='Lowongan'>
@@ -113,7 +108,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                 <?php 
                     $option = $conn->query("SELECT DISTINCT _job FROM loker");
                     while ($row = $option->fetch_assoc()) {
-                        echo "<option value = \"{$row['_job']}\">{$row['_job']}</option>";
+                        if ($row["_job"] != ""){
+                            echo "<option value = \"{$row['_job']}\">{$row['_job']}</option>";
+                        }
+                    }
+                ?>
+            </select>
+            <select name = "Kategori">
+                <option value="">Kategori</option>
+                <?php 
+                    $option = $conn->query("SELECT DISTINCT _jobKategori FROM loker");
+                    while ($row = $option->fetch_assoc()) {
+                        if ($row["_jobKategori"] != ""){
+                            echo "<option value = \"{$row['_jobKategori']}\">{$row['_jobKategori']}</option>";
+                        }
                     }
                 ?>
             </select>
@@ -122,20 +130,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                 <?php
                 $option = $conn->query("SELECT DISTINCT _alamat FROM loker");
                 while ($row = $option->fetch_assoc()) {
-                    echo "<option value =\"{$row['_alamat']}\">{$row['_alamat']}</option>";
+                    if ($row["_alamat"] != ""){
+                        echo "<option value =\"{$row['_alamat']}\">{$row['_alamat']}</option>";
+                    }
                 } 
                 ?>
             </select>
             <select name = "Tipe">
                 <option value="">Semua Jenis</option>
                 <?php
-                $option = $conn->query("SELECT DISTINCT _tipe FROM loker");
-                while ($row = $option->fetch_assoc()) {
-                    echo "<option value=\"{$row['_tipe']}\">{$row['_tipe']}</option>";
-                } 
+                    echo"<option value='Full Time'>Full Time</option>";
+                    echo"<option value='Part Time'>Part Time</option>";
+                    echo"<option value='Remote'>Remote</option>";
+                    echo"<option value='FreeLance'>FreeLance</option> ";
                 ?>
             </select>
-            <input style="width: 20%;" name = "Gaji" type="text" placeholder="gaji: 100000000-30000000">
+            <input style="width: 15%;" name = "Gaji" type="text" placeholder="gaji: 10000-300000">
             <button type="submit"><img width="15px" src="../decoration/search.png  " alt=""></button>
         </form>
     </div>
@@ -148,12 +158,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             echo "<div class='job-container'>";
             while ($row = $mainPageResult->fetch_assoc()) {
                 $pict = $row['_pictpath'];
+                $gaji = number_format($row['_gaji'],2,",",".");
                 echo"<div class='job-item'>
                             <td><img src='$pict' alt='' width = 150px></td>
                             <h2><b>{$row['_job']}</b></h2>
+                            <p>Kategori: {$row['_jobKategori']}</p>
                             <p>Perusahaan: {$row['_namaPerusahaan']}</p>
                             <p>Jenis: {$row['_tipe']}</p>
-                            <p>Gaji: Rp {$row['_gaji']}/{$row['_gajiPer']}</p>
+                            <p>Alamat: {$row['_alamat']}</p>
+                            <p>Gaji: Rp {$gaji}/{$row['_gajiPer']}</p>
                             <form action='' method='post'> 
                                 <input type='hidden' name='detailLowongan' value='" . htmlspecialchars($row["_namaPerusahaan"] . "|" . $row["_job"], ENT_QUOTES, 'UTF-8') . "'>
                                 <button type='submit' class='btn'>Lihat Detail</button>
@@ -165,7 +178,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         } else {
             echo "No records found";
         }
-        $conn->close();
+        closeDB($conn);
         ?>
     <footer>
     2025 Portal Lowongan Kerja | Dibuat dengan sepenuh hati😍

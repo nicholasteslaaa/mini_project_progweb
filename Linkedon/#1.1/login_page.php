@@ -1,28 +1,34 @@
- <?php
+<?php
 include "method.php";
-$conn = openDB("localhost","root","","linkedon");
+require "DBconnection.php";
+session_start();
 
-$conn->query("truncate table current_client");
-$conn->query("truncate table current_company");
+if (isset($_SESSION["email"]) && isset($_SESSION["tipeUser"])) {
+    header("Location: main_page.php");
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
-    $email = $_POST["email"];
-    $password = $_POST["password"];
-    $tipe = getTypeFromEmail($conn,$email);
-    
-    if ($tipe != null){
-        $checkclient = $conn->query("select * from $tipe where _email = '$email' and _password = '$password'");
-        if ($checkclient->num_rows > 0){
-            $conn->query("insert into current_$tipe values('$email')");
-            header("Location: main_page.php");
-            exit();
+    if (isset($_POST["email"]) && isset($_POST["password"])){
+        $email = $_POST["email"];
+        $password = $_POST["password"];
+        $tipe = getTypeFromEmail($conn,$email);
+        
+        if ($tipe != null){
+            $checkclient = $conn->query("select * from $tipe where _email = '$email' and _password = '$password'");
+            if ($checkclient->num_rows > 0){
+                $_SESSION["email"] = $email;
+                $_SESSION["tipeUser"] = $tipe;
+                setcookie("email", $email, time()+ 60*60*24,"/");
+                header("Location: main_page.php");
+                exit();
+            }
+        }
+        else{
+            echo "Email not found!";
         }
     }
-    else{
-        echo "Email not found!";
-    }
-$conn->close();
 }
+closeDB($conn);
 ?>
 
 <!DOCTYPE html>
@@ -78,7 +84,7 @@ $conn->close();
                                 </tr>
                                 <tr>
                                     <td>
-                                        <p>Don't have an account yet? <a href="../register_page.php">Register here</a></p>
+                                        <p>Don't have an account yet? <a href="register_page.php">Register here</a></p>
                                     </td>
                                 </tr>
                             </form>

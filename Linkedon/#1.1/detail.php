@@ -1,10 +1,8 @@
 <?php
 //function
 function permission($conn,$namaPerusahaan){
-    if (companyOrClient($conn)=="company"){
-        $curEmail = $conn->query("SELECT * FROM current_company")->fetch_assoc()["_email"];
-        $currentnama = $conn->query("SELECT * FROM company where _email = '$curEmail'")->fetch_assoc()["_namaPerusahaan"];
-        
+    if ($_SESSION["tipeUser"]=="company"){
+        $currentnama = $conn->query("SELECT * FROM company where _email = '{$_SESSION['email']}'")->fetch_assoc()["_namaPerusahaan"];
         if ($namaPerusahaan == $currentnama){
             return true;   
         }
@@ -14,16 +12,16 @@ function permission($conn,$namaPerusahaan){
 ?>
 <?php
 include "method.php";
-$conn = openDB("localhost","root","","linkedon");
+require "DBconnection.php";
+session_start();
 
-$detail = $conn->query("select _namaPerusahaan,_job from detaillowongan");
-$rowdetail = $detail->fetch_assoc();
-$namaperusahaan = $rowdetail["_namaPerusahaan"];
-$jobdesk = $rowdetail["_job"];
+$namaperusahaan = $_SESSION["namaPerusahaan"]; 
+$jobdesk = $_SESSION["job"];
 
 $getInfo = $conn->query("select *,FORMAT(_gaji, 0, 'de_DE') AS gaji from loker where _namaPerusahaan = '$namaperusahaan' AND _job = '$jobdesk'");
 $row = $getInfo->fetch_assoc();
 $job = $row["_job"];
+$KategoriJob = $row["_jobKategori"];
 $deskripsi = $row["_deskripsi"];
 $kualifikasi = $row["_kualifikasi"];
 $gaji= $row["gaji"];
@@ -32,13 +30,11 @@ $picture = $row["_pictpath"];
 $deadline = $row["_deadline"];
 $alamat = $row["_alamat"];
 $tipe = $row["_tipe"];
-$remote = $row["_remote"];
 $keuntungan = $row["_keuntungan"];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
     if (isset($_POST["form_type"])) {
         if ($_POST["form_type"] == "main_menu"){
-            truncateTable($conn,"detaillowongan");
             header("location: main_page.php");
         }
     }
@@ -50,12 +46,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     if (isset($_POST["editLowongan"])) {
         if ($_POST["editLowongan"] == "edit" && permission($conn,$namaperusahaan)){
-            $conn->query("UPDATE detaillowongan SET _edit = true WHERE _namaPerusahaan = '$namaperusahaan' and _job = '$jobdesk'");
+            $_SESSION["job"] = $job;
+            $_SESSION["edit"] = "true";
             header("location: pengajuanPage.php");
         }
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -83,6 +79,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         <div class="job-details">
             <h2>Software Engineer</h2>
             <table class = "main_table"> 
+                <tr>
+                    <td class="kolomtable">
+                        <strong>Kategori </strong>
+                    </td>
+                    <td class="kolomtable">
+                        <p><?php echo $KategoriJob; ?></p>
+                    </td>
+                </tr>
                 <tr>
                     <td class="kolomtable">
                         <strong>Perusahaan </strong>
@@ -130,7 +134,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             </table>
         
             <?php
-            if (companyOrClient($conn) == "client"){
+            
+            if ($_SESSION["tipeUser"] == "client"){
                 echo "<a href='pengajuanPage.php' class='apply-btn'>Ajukan Lamaran</a>";
             }
             else if (permission($conn,$namaperusahaan)){
@@ -233,7 +238,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             } else {
                 echo "<p style='text-align:center'>Belum ada lamaran <p>";
             }
-            $conn->close();
+            closeDB($conn);
         }
     ?>
 
