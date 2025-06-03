@@ -141,7 +141,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             <?php
             
             if ($_SESSION["tipeUser"] == "client"){
-                echo "<a href='pengajuanPage.php' class='apply-btn'>Ajukan Lamaran</a>";
+                $namaClient = getClientName($conn,$_SESSION["email"]);
+                $result = $conn->query("SELECT * FROM cv WHERE _nama = '$namaClient' AND _namaPerusahaan	= '$namaperusahaan' AND _job = '$jobdesk'");
+                if ($result->num_rows > 0){
+                    echo "<br> <strong><p> Anda Sudah Pernah Melamar!</p></strong>";
+                }else {
+                    echo "<a href='pengajuanPage.php' class='apply-btn'>Ajukan Lamaran</a>";
+                }
             }
             else if (permission($conn,$namaperusahaan)){
                 echo "<table>";
