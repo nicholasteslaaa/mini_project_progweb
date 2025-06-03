@@ -1,0 +1,307 @@
+.logout-button{
+    width: 160px;
+    height: fit-content;
+    background: #B9B28A;
+    color: black;
+    border: black;
+    cursor: pointer;
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-bottom: 0px  ;
+    padding: 10px;
+
+    font-size: larger;
+}
+.Account{
+    width: 160px;
+    height: fit-content;
+    top: 33px;
+    right: 20px;
+    background: #B9B28A;
+    color: black;
+    border: black;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+
+/*bawahnya*/
+.hero{
+    background: url("../../Images/Brown Organic Abstract Zoom Virtual Background (1).png") no-repeat center center/cover;
+    color: black;
+    text-align: center; 
+    padding: 50px 20px;;
+}
+
+.hero h2 {
+    font-size: 40px;
+}
+
+/*Form Pencarian*/
+.search-box{
+    text-align: center;
+    margin: 20px 0;
+}
+
+.search-box input {
+    width: 50%;
+    padding: 10px;
+    border: 1px solid #B9B28A;
+    border-radius: 5px;/* Tombol Logout & Account */
+    .logout-button {
+        width: 160px;
+        background: #B9B28A;
+        color: black;
+        border: none;
+        cursor: pointer;
+        border-radius: 20px;
+        margin-top: 10px;
+        padding: 10px;
+        font-size: larger;
+    }
+    
+    /* Bagian Hero */
+    .hero {
+        background: url("../../Images/Brown Organic Abstract Zoom Virtual Background (1).png") no-repeat center center/cover;
+        color: black;
+        text-align: center;
+        padding: 50px 20px;
+    }
+    
+    .hero h2 {
+        font-size: 40px;
+    }
+    
+    /* Form Pencarian */
+    .search-box {
+        text-align: center;
+        margin: 20px 0;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    
+    .search-box input, .search-box select {
+        padding: 10px;
+        border: 1px solid #B9B28A;
+        border-radius: 5px;
+    }
+    
+    .search-box input {
+        width: 30%;
+    }
+    
+    .search-box button {
+        padding: 10px 15px;
+        background: #B9B28A;
+        color: black;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    
+    /* Dropdown Menu */
+    .dropbtn {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+    }
+    
+    .dropdown {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+    
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: #EBE5C2;
+        border-radius: 10px;
+        box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+        min-width: 160px;
+        padding: 10px;
+    }
+    
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+    
+    .dropdown-content button {
+        width: 100%;
+        background: none;
+        border: none;
+        text-align: left;
+        padding: 8px;
+        cursor: pointer;
+    }
+    
+    .dropdown-content button:hover {
+        background-color: #B9B28A;
+    }
+    
+}
+
+.search-box button {
+    padding: 10px 15px;
+    background: #B9B28A; 
+    color: black;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/*DAFTAR LOWONGAN*/
+.job-container{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.job-item{
+    background: #EBE5C2;
+    border: 1px solid #B9B28A;
+    padding: 15px;
+    width: 300px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    border-radius: 5px;
+}
+
+.job-item h3 {
+    font-size: 14px;
+    color: #504B38;
+}
+
+.job-item p {
+    font-size: 14px;
+    color: #504B38;
+}
+
+.btn{
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px;
+    background: #B9B28A;
+    color: black;
+    text-decoration: dashed;
+    border-radius: 5px;
+}
+
+/*footer*/
+
+
+
+.dropbtn {
+background-color:transparent;
+color: white;
+border-radius: 100%;
+border: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+position: absolute;
+top: 1px;
+right: 10px;
+/* transform: translateY(-50%); */
+color: black;
+border: black;
+cursor: pointer;
+border-radius: 5px;
+/* text-decoration:none; */
+}
+
+.dropdown-content {
+display: none;
+position: absolute;
+right: 1px;
+background-color: transparent;
+border-radius: 15%;
+min-width: 160px;
+box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+z-index: 1;
+}
+
+.dropdown-content a {
+color: black;
+text-decoration: none;
+display: block;
+}
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {background-color:rgba(80, 75, 56, 0.77);}
+
+.search-box {
+    text-align: center;
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.search-box input, .search-box select, .search-box button {
+    padding: 10px;
+    border: 1px solid #B9B28A;
+    border-radius: 5px;
+}
+
+.search-box button {
+    background: #B9B28A;
+    color: black;
+    border: none;
+    cursor: pointer;
+}
+
+.search-box div {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.search-box div button {
+    background: #504B38 ;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+}
+
+.dropdown-content select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #504B38;
+    border-radius: 5px;
+    background: #EBE5C2;
+    color: black;
+    cursor: pointer;
+}
+
+.btn {
+    background: #504B38;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+/* Mengubah warna latar belakang item yang dipilih */
+select {
+    background-color: #EBE5C2; 
+    color: black; 
+}
+
+/* Untuk browser berbasis WebKit (Chrome, Edge, Safari) */
+select option:checked {
+    background-color: #504B38 !important;
+    color: white !important;
+}
