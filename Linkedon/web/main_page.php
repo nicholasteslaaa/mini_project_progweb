@@ -14,8 +14,8 @@ $mainPageResult = $conn->query("SELECT *,FORMAT(_gaji, 0, 'de_DE') AS gaji FROM 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
     if (isset($_POST["form_type"])) {
         if ($_POST["form_type"] == "deleteAccount"){
-            DeleteAccount($conn,$curEmail,$usertype);
-            header("location: login_page.php");
+            DeleteAccount($conn,$curEmail,$tipe);
+            header("location: logout.php");
         }
         if ($_POST["form_type"] == "logout"){
             header("location: logout.php");
