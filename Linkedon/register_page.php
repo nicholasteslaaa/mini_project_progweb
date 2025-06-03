@@ -1,7 +1,7 @@
 
 <?php
-include "method.php";
-require "DBconnection.php";
+include "web/method.php";
+require "web/DBconnection.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["image"])) {
     $email = $_POST["Email"];
@@ -217,7 +217,7 @@ label{
         </fieldset>
     </form>
     
-    <img src="../decoration/SHREK.png" width=350px alt="">
+    <img src="decoration/SHREK.png" width=350px alt="">
 
     <footer>
     2025 Portal Lowongan Kerja | Dibuat dengan sepenuh hati😍

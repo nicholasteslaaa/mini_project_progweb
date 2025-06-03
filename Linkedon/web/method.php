@@ -89,16 +89,26 @@ function checkCV($conn,$name,$namaPerusahaan,$job){
     return $result->num_rows > 0;
 }
 
-function getFile($folder){
-    $target_dir = $folder."/";
-    // Get file extension
-    $file_extension = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
-    // Generate a unique filename using timestamp
-    $new_filename = time() . "." . $file_extension;
-    $target_file = $target_dir . $new_filename; // pict path
-    move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
-    return $target_file;
+function getFile($folder) {
+    // Check if the image key exists and no error occurred
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $target_dir = rtrim($folder, "/") . "/";
+        $file_extension = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
+        $new_filename = time() . "." . $file_extension;
+        $target_file = $target_dir . $new_filename;
+
+        // Move the uploaded file
+        if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+            return $target_file;
+        } else {
+            return null; // move failed
+        }
+    } else {
+        // Handle error or missing file
+        return null;
+    }
 }
+
 
 function getPDF($folder) {
     if (!isset($_FILES["pdf"]) || $_FILES["pdf"]["error"] !== UPLOAD_ERR_OK) {

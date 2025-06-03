@@ -1,3 +1,36 @@
+<?php
+include "method.php";
+require "DBconnection.php";
+session_start();
+
+if (isset($_SESSION["email"]) && isset($_SESSION["tipeUser"])) {
+    header("Location: main_page.php");
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
+    if (isset($_POST["email"]) && isset($_POST["password"])){
+        $email = $_POST["email"];
+        $password = $_POST["password"];
+        $tipe = getTypeFromEmail($conn,$email);
+        
+        if ($tipe != null){
+            $checkclient = $conn->query("select * from $tipe where _email = '$email' and _password = '$password'");
+            if ($checkclient->num_rows > 0){
+                $_SESSION["email"] = $email;
+                $_SESSION["tipeUser"] = $tipe;
+                setcookie("email", $email, time()+ 60*60*24,"/");
+                header("Location: main_page.php");
+                exit();
+            }
+        }
+        else{
+            echo "Email not found!";
+        }
+    }
+}
+closeDB($conn);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +56,7 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <form action="mainPage.html" method="post"> 
+                                    <form action="" method="post"> 
                                 <tr>
                                     <td>
                                         <label for="Email" class="label" style="text-align: left;"> Email:</label>
